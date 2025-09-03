@@ -1,0 +1,48 @@
+Download VSCode: https://code.visualstudio.com/docs/setup/windows
+
+
+pip install uv # install uv in your device
+
+uv init 
+
+uv venv myenv   #creates venv folder where you have packages, libraries and python inside this folder
+
+use  activate with command to activate
+
+example :
+if env is myenv:
+     myenv\Scripts\activate
+if env is .venv
+    .venv\Scripts\activate
+
+uv pip install <package_name>
+
+to log all the packages in env :
+uv pip freeze >> requirements.txt
+
+to show all the packages with version:
+uv pip freeze 
+
+
+#install the packages in UV from requirements.txt file
+uv pip install -r requirements.txt
+
+to deactivate env:
+myenv/Scripts/deactivate
+
+
+
+Dotted notation
+
+current -> . or give the module
+if main is in other folder and (folder and package) are in same level ..
+
+
+localhost: http://127.0.0.1:5000
+http:localhost:5000/
+
+port 5000 is default port for flask
+
+Streamlit -- 
+
+https://www.postman.com/downloads/

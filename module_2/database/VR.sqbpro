@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="VR.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2340"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="2" parent="0"/><expanded_item id="3" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="employee_projects" custom_title="0" dock_id="2" table="4,17:mainemployee_projects"/><dock_state state="000000ff00000000fd00000001000000020000033b0000026efc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f007700730065003201000000000000033b0000011e00ffffff000002580000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="departments" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="91"/><column index="2" value="111"/><column index="3" value="53"/><column index="4" value="47"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="employee_projects" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="81"/><column index="2" value="67"/><column index="3" value="163"/><column index="4" value="97"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="employees" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="79"/><column index="2" value="69"/><column index="3" value="70"/><column index="4" value="202"/><column index="5" value="85"/><column index="6" value="46"/><column index="7" value="93"/><column index="8" value="77"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="projects" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="65"/><column index="2" value="179"/><column index="3" value="85"/><column index="4" value="85"/><column index="5" value="54"/><column index="6" value="93"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">
+
+CREATE TABLE departments (
+    department_id INTEGER PRIMARY KEY,
+    department_name VARCHAR(50) NOT NULL,
+    location VARCHAR(50),
+    budget DECIMAL(10,2)
+);
+
+-- Employees table
+CREATE TABLE employees (
+    employee_id INTEGER PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    hire_date DATE,
+    salary DECIMAL(8,2),
+    department_id INTEGER,
+    manager_id INTEGER,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id),
+    FOREIGN KEY (manager_id) REFERENCES employees(employee_id)
+);
+
+-- Projects table
+CREATE TABLE projects (
+    project_id INTEGER PRIMARY KEY,
+    project_name VARCHAR(100) NOT NULL,
+    start_date DATE,
+    end_date DATE,
+    budget DECIMAL(10,2),
+    department_id INTEGER,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+-- Employee_Projects junction table (many-to-many relationship)
+CREATE TABLE employee_projects (
+    employee_id INTEGER,
+    project_id INTEGER,
+    role VARCHAR(50),
+    hours_allocated INTEGER,
+    PRIMARY KEY (employee_id, project_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
+    FOREIGN KEY (project_id) REFERENCES projects(project_id)
+);
+
+-- =====================================================
+-- Sample Data Insertion
+-- =====================================================
+
+-- Insert departments
+INSERT INTO departments (department_id, department_name, location, budget) VALUES
+(1, 'Engineering', 'San Francisco', 2000000.00),
+(2, 'Marketing', 'New York', 800000.00),
+(3, 'Sales', 'Chicago', 1200000.00),
+(4, 'HR', 'Austin', 500000.00),
+(5, 'Finance', 'Boston', 600000.00);
+
+-- Insert employees
+INSERT INTO employees (employee_id, first_name, last_name, email, hire_date, salary, department_id, manager_id) VALUES
+(1, 'John', 'Smith', 'john.smith@company.com', '2020-01-15', 95000.00, 1, NULL),
+(2, 'Sarah', 'Johnson', 'sarah.johnson@company.com', '2019-03-22', 87000.00, 1, 1),
+(3, 'Mike', 'Brown', 'mike.brown@company.com', '2021-06-10', 72000.00, 1, 1),
+(4, 'Emily', 'Davis', 'emily.davis@company.com', '2020-09-05', 68000.00, 2, NULL),
+(5, 'David', 'Wilson', 'david.wilson@company.com', '2018-11-30', 78000.00, 2, 4),
+(6, 'Lisa', 'Anderson', 'lisa.anderson@company.com', '2022-02-14', 85000.00, 3, NULL),
+(7, 'Tom', 'Taylor', 'tom.taylor@company.com', '2021-08-20', 65000.00, 3, 6),
+(8, 'Anna', 'Martinez', 'anna.martinez@company.com', '2020-04-12', 62000.00, 4, NULL),
+(9, 'Chris', 'Garcia', 'chris.garcia@company.com', '2019-07-08', 89000.00, 5, NULL),
+(10, 'Jessica', 'Lee', 'jessica.lee@company.com', '2021-12-03', 71000.00, 1, 1);
+
+-- Insert projects
+INSERT INTO projects (project_id, project_name, start_date, end_date, budget, department_id) VALUES
+(1, 'Mobile App Development', '2023-01-01', '2023-12-31', 500000.00, 1),
+(2, 'Website Redesign', '2023-03-15', '2023-09-30', 150000.00, 1),
+(3, 'Marketing Campaign Q2', '2023-04-01', '2023-06-30', 200000.00, 2),
+(4, 'Sales Training Program', '2023-02-01', '2023-05-31', 75000.00, 3),
+(5, 'HR System Upgrade', '2023-06-01', '2023-11-30', 100000.00, 4);
+
+-- Insert employee-project assignments
+INSERT INTO employee_projects (employee_id, project_id, role, hours_allocated) VALUES
+(1, 1, 'Project Manager', 40),
+(2, 1, 'Senior Developer', 35),
+(3, 1, 'Developer', 40),
+(10, 1, 'Developer', 30),
+(2, 2, 'Lead Developer', 25),
+(3, 2, 'Developer', 20),
+(4, 3, 'Campaign Manager', 40),
+(5, 3, 'Marketing Specialist', 35),
+(6, 4, 'Training Coordinator', 30),
+(7, 4, 'Sales Trainer', 25),
+(8, 5, 'Project Lead', 35);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
