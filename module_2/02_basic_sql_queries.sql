@@ -206,7 +206,7 @@ FROM employees;
 -- Current date and time
 SELECT 
     DATE('now') AS current_date,           -- SQLite
-    DATETIME('now') AS current_datetime;   -- SQLite
+    DATETIME('now','+5 hours','+30 minutes') AS current_datetime;   -- SQLite for UTC +5:30
 
 -- Date arithmetic
 SELECT 
