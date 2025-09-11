@@ -76,6 +76,12 @@ GROUP BY
         ELSE 'High'
     END;
 
+
+SELECT CAST('123' AS INTEGER);   -- → 123
+SELECT CAST(3.75 AS INT);        -- → 3
+SELECT CAST(123 AS TEXT);        -- → '123'
+SELECT CAST('2025-09-11' AS DATE); -- works with date functions
+
 -- =====================================================
 -- HAVING Clause - Filtering Groups
 -- =====================================================
