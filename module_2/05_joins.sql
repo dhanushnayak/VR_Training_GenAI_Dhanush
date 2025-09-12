@@ -44,7 +44,10 @@ SELECT
     d.department_name,
     p.project_name,
     ep.role,
-    ep.hours_allocated
+    ep.hours_allocated,
+    p.budget as project_budget,
+    d.budget  as depart_budget,
+    ( p.budget / d.budget) * 100 as budget_utilization  
 FROM employees e
 INNER JOIN departments d ON e.department_id = d.department_id
 INNER JOIN employee_projects ep ON e.employee_id = ep.employee_id
