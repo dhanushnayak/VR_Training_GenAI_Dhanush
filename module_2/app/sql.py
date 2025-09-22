@@ -1,0 +1,3 @@
+EMPLOYEES_QUERY = "SELECT * FROM EMPLOYEES;"
+TASK1 = "SELECT * FROM EMPLOYEES;"
+TASK2 = "SELECT first_name,last_name from EMPLOYEES where salary > "
